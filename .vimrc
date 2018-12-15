@@ -1,90 +1,99 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+set nocompatible  " be iMproved, required
+set encoding=utf-8 " required by YCM
+filetype off      " required
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+call plug#begin('~/.vim/plugged')
 
- 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'scrooloose/nerdtree'
-" Plugin 'scrooloose/syntastic'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'Chiel92/vim-autoformat'
-Plugin 'valloric/youcompleteme'
-Plugin 'flazz/vim-colorschemes'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'benmills/vimux'
-Plugin 'bling/vim-airline'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'mattn/emmet-vim'
-Plugin 'majutsushi/tagbar'
-Plugin 'jwalton512/vim-blade'
-Plugin 'posva/vim-vue'
-Plugin 'wincent/command-t'
+" ========== autocomplete
+Plug 'ervandew/supertab'
+Plug 'valloric/youcompleteme', { 'do': './install.py' }
+        let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+        " YCM compatibility with UltiSnips
+        let g:ycm_key_list_select_completion = [ '<C-n>', '<Down>' ] 
+        let g:ycm_key_list_previous_completion = [ '<C-p>', '<Up>' ]
+        let g:SuperTabDefaultCompletionType = '<C-n>'
+        set completeopt-=preview " disable preview window
+        map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
-" Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-"Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" Plugin 'ascenator/L9', {'name': 'newL9'}
+" ========= snippets
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+    let g:UltiSnipsExpandTrigger = "<tab>"
+    let g:UltiSnipsJumpForwardTrigger = "<tab>"
+    let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
+" ========== colorschemes 
+Plug 'flazz/vim-colorschemes'
+
+" =========== git
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+
+" ========= syntax helpers
+Plug 'scrooloose/syntastic'
+Plug 'Chiel92/vim-autoformat'
+Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'jiangmiao/auto-pairs'
+Plug 'lambdalisue/vim-django-support'
+Plug 'alvan/vim-closetag'
+        let g:closetag_filenames = '*.html,*.xhtml,*.xml,*.vue,*.php,*.phtml,*.js,*.coffee'
+
+" ========= file tree
+Plug  'scrooloose/nerdtree'
+        let NERDTreeIgnore = [ '__pycache__',  '\.pyc$', '\.o$', '\.swp', '*\.swp', 'node_modules/' ]
+        let NERDTreeShowHidden=1
+
+" ========= navigation
+Plug 'christoomey/vim-tmux-navigator'
+        " autostart nerd-tree
+        autocmd vimenter * NERDTree
+        autocmd StdinReadPre * let s:std_in=1
+        autocmd VimEnter * if argc() == 0 && !exists("s:stdn_in") | NERDTree | endif
+        " nerdtree toggle
+        map <C-n> :NERDTreeToggle<CR>
+Plug 'zhaocai/GoldenView.Vim'
+        let g:goldenview__enable_default_mapping = 0
+Plug 'benmills/vimux'
+        " vimux binding
+        map <Leader>vp :VimuxPromptCommand<CR>
+        nmap <F8> :TagbarToggle<CR>
+
+" ======= fuzzy find
+" Plug 'ctrlpvim/ctrlp.vim'
+
+" ======= extras
+Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plug 'majutsushi/tagbar'
+Plug 'wincent/command-t'
+Plug 'bling/vim-airline'
+    " airline powerline fonts
+    let g:airline_powerline_fonts=1
+
+Plug 'easymotion/vim-easymotion'
+
+call plug#end()            " required
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
 
-" My settings
+" ============= extra settings
 set autochdir
-set number
 syntax on
-" Move to end of line in insert mode
-" inoremap <C-e> <C-o>$
 
-" Tabs to 4 spaces
-filetype plugin indent on
-" show existing tab with 5 spaces width
+" tabs to 4 spaces
+" set smartindent
+set background=dark " required by gruvbox
 set tabstop=4
-" when identing with '>', use 4 spaces width
 set shiftwidth=4
-" on pressing tab, insert 4 spaces
 set expandtab
-
-" autostart nerd-tree
-autocmd vimenter * NERDTree
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:stdn_in") | NERDTree | endif
-
-" nerdtree toggle
-map <C-n> :NERDTreeToggle<CR>
-
-" airline powerline fonts
-let g:airline_powerline_fonts=1
+set ruler
+set hidden
+let &colorcolumn="80"
+:set guioptions-=m " remove menu bar
+:set guioptions-=T " remove toolbar
+:set guioptions-=r " remove right-hand scroll bar
+:set guioptions-=L " remove left-hand scroll bar
+":set lines=999 columns=999
+set shortmess+=A " disable swap file warning
 
 " hybrid line numbers
 set number relativenumber
@@ -95,30 +104,10 @@ augroup numbertoggle
 augroup END
 
 " colorschemes 
-" colorscheme leya
-
-" dark green
-" colorscheme greenvision
-
-" casual dark
-" colorscheme Benokai
-" colorscheme anderson
-colorscheme 3dglasses
-
-" solarized light
-" colorscheme materialbox
-
-" easier split navigations
-"nnoremap <C-J> <C-W><C-J>
-"nnoremap <C-K> <C-W><C-K>
-"nnoremap <C-L> <C-W><C-L>
-"nnoremap <C-H> <C-W><C-H>
+" Dark: monokai-chris, gruvbox
+" Light: ChocolatePapaya
+colorscheme gruvbox
+            let g:gruvbox_constrast_dark='hard'
 
 " split below and right feels more natural
 set splitbelow
-set splitright
-
-" vimux binding
-map <Leader>vp :VimuxPromptCommand<CR>
-nmap <F8> :TagbarToggle<CR>
-
