@@ -1,7 +1,6 @@
 set nocompatible
 set encoding=utf-8
 
-
 call plug#begin('~/.vim/plugged')
 
 " ========== autocomplete
@@ -15,6 +14,7 @@ Plug 'valloric/youcompleteme', { 'do': './install.py' }
   set completeopt-=preview " disable preview window
   map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
+
 " ========= snippets
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -23,7 +23,8 @@ Plug 'honza/vim-snippets'
   let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
 " ========== colorschemes 
-Plug 'flazz/vim-colorschemes'
+Plug 'morhetz/gruvbox'
+Plug 'posva/vim-vue'
 
 " =========== git
 Plug 'tpope/vim-fugitive'
@@ -31,47 +32,48 @@ Plug 'airblade/vim-gitgutter'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " ========= syntax helpers
-Plug 'scrooloose/syntastic'
-Plug 'tpope/vim-commentary'
+Plug 'dart-lang/dart-vim-plugin'
+Plug 'djoshea/vim-autoread'
+" Plug 'tpope/vim-rails'
+" Plug 'kchmck/vim-coffee-script'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'jparise/vim-graphql'
+"Plug 'scrooloose/syntastic' " <--- will eat your ram
+" Plug 'tpope/vim-commentary'
 Plug 'Chiel92/vim-autoformat'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'jiangmiao/auto-pairs'
-Plug 'lambdalisue/vim-django-support'
+"Plug 'lambdalisue/vim-django-support' " <--- will eat your startup
 Plug 'alvan/vim-closetag'
-  let g:closetag_filenames = '*.html,*.xhtml,*.xml,*.vue,*.php,*.phtml,*.js,*.jsx,*.coffee,*.erb'
+  let g:closetag_filenames = '*.html,*.xhtml,*.xml,*.vue,*.phtml,*.js,*.jsx,*.coffee,*.erb'
 
 " ========= file tree
 Plug  'scrooloose/nerdtree'
   let NERDTreeIgnore = [ '__pycache__',  '\.pyc$', '\.o$', '\.swp', '*\.swp', 'node_modules/' ]
   let NERDTreeShowHidden=1
-
-" ========= navigation
-Plug 'christoomey/vim-tmux-navigator'
   " autostart nerd-tree
   autocmd vimenter * NERDTree
   autocmd StdinReadPre * let s:std_in=1
   autocmd VimEnter * if argc() == 0 && !exists("s:stdn_in") | NERDTree | endif
   " nerdtree toggle
   map <C-n> :NERDTreeToggle<CR>
+
+" ========= navigation
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'zhaocai/GoldenView.Vim'
   let g:goldenview__enable_default_mapping = 0
-Plug 'benmills/vimux'
-  " vimux binding
-  map <Leader>vp :VimuxPromptCommand<CR>
-  nmap <F8> :TagbarToggle<CR>
 
 " ======= fuzzy find
-" Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 
 " ======= extras
-Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
-Plug 'majutsushi/tagbar'
-Plug 'wincent/command-t'
+" Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plug 'bling/vim-airline'
   " airline powerline fonts
   let g:airline_powerline_fonts=1
-
 Plug 'easymotion/vim-easymotion'
+Plug 'tpope/vim-surround'
 
 call plug#end()            " required
 filetype plugin indent on    " required
@@ -79,10 +81,17 @@ filetype plugin indent on    " required
 " ============= extra settings
 set autochdir
 syntax on
+syntax sync minlines=100
+syntax sync maxlines=240
+set synmaxcol=800
 
-" tabs to 2 spaces
-" set smartindent
-set background=dark " required by gruvbox
+" tabs control
+autocmd BufNewFile,BufRead *.php call SetTabsSpacing()
+function SetTabsSpacing()
+    setlocal tabstop=4
+    setlocal shiftwidth=4
+endfunction
+
 set tabstop=2
 set shiftwidth=2
 set expandtab
@@ -107,6 +116,7 @@ augroup END
 " colorschemes 
 " Dark: monokai-chris, gruvbox
 " Light: ChocolatePapaya
+set background=dark
 colorscheme gruvbox
   let g:gruvbox_contrast_dark='default'
   let g:gruvbox_contrast_light='default'
@@ -130,15 +140,12 @@ set undodir=~/.vim/undo
 set undolevels=1000
 set undoreload=10000
 
+" incremental and highlight search
+set incsearch
+set hlsearch
 
-" tmux will only forward escape sequences to the terminal if surrounded by a
-" DCS sequence
-" "
-" http://sourceforge.net/mailarchive/forum.php?thread_name=AANLkTinkbdoZ8eNR1X2UobLTeww1jFrvfJxTMfKSq-L%2B%40mail.gmail.com&forum_name=tmux-users
-if exists('$TMUX')
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-else
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-endif
+" clear highlighting on return in normal mode
+nnoremap <silent> <CR> :noh<CR><CR>
+
+" use global clipboard
+set clipboard=unnamed,unnamedplus
