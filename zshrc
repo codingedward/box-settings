@@ -64,6 +64,7 @@ ZSH_THEME="cloud"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
+  fzf
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -100,9 +101,39 @@ export LC_CTYPE=en_US.UTF-8
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# flutter tools and dart sdk tools
+export PATH="$PATH:/usr/local/opt/flutter/bin:/usr/local/opt/flutter/bin/cache/dart-sdk/bin" 
+
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh"  ] && . "/usr/local/opt/nvm/nvm.sh"
+
+# Aliases
 alias t="tmux"
 alias v="vim"
+alias f='fzf --reverse --preview="echo user={3} when={-4..-2}; bat --color=always --style=header,grid --line-range {-1}" --header-lines=1'
+alias vf='v $(f)'
 alias art="/usr/local/bin/php artisan"
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-#export PATH="$PATH:$HOME/.rvm/bin:/usr/local/bin:$HOME/.composer/vendor/bin/:/usr/local/opt/flutter/bin"
+alias differential="ssh smoothio@139.59.145.190"
+alias textit="ssh smoothio@165.227.139.225"
+
+# download media
+alias p3="youtube-dl --extract-audio --audio-format mp3 $1"
+alias p4="youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' $1"
+
+# mysql
+export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
+
+# compilers to find zlib
+export LDFLAGS="${LDFLAGS} -L/usr/local/opt/zlib/lib"
+export CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/zlib/include"
+
+# pkg-config to find zlib
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH} /usr/local/opt/zlib/lib/pkgconfig"
+
+# elastic beanstalk
+export PATH="/Users/edwardnjoroge/.ebcli-virtual-env/executables:$PATH"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

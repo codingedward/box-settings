@@ -1,5 +1,6 @@
 set nocompatible
 set encoding=utf-8
+let mapleader = " " 
 
 call plug#begin('~/.vim/plugged')
 
@@ -14,7 +15,6 @@ Plug 'valloric/youcompleteme', { 'do': './install.py' }
   set completeopt-=preview " disable preview window
   map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
-
 " ========= snippets
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -24,7 +24,6 @@ Plug 'honza/vim-snippets'
 
 " ========== colorschemes 
 Plug 'morhetz/gruvbox'
-Plug 'posva/vim-vue'
 
 " =========== git
 Plug 'tpope/vim-fugitive'
@@ -39,14 +38,33 @@ Plug 'djoshea/vim-autoread'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'jparise/vim-graphql'
-"Plug 'scrooloose/syntastic' " <--- will eat your ram
+Plug 'posva/vim-vue'
+"Plug 'vim-syntastic/syntastic' " <--- will eat your ram
+"  set statusline+=%#warningmsg#
+"  set statusline+=%{SyntasticStatuslineFlag()}
+"  set statusline+=%*
+
+"  let g:syntastic_always_populate_loc_list = 1
+"  let g:syntastic_auto_loc_list = 1
+"  let g:syntastic_check_on_open = 1
+"  let g:syntastic_check_on_wq = 0
+"  let g:syntastic_javascript_checkers = ['jslint']
+"  let g:syntastic_javascript_standard_generic = 1
+
 " Plug 'tpope/vim-commentary'
 Plug 'Chiel92/vim-autoformat'
 Plug 'octol/vim-cpp-enhanced-highlight'
+  let g:cpp_class_scope_highlight = 1
+  let g:cpp_member_variable_highlight = 1
+  let g:cpp_class_decl_highlight = 1
+  let g:cpp_experimental_template_highlight = 1
+  let g:cpp_concepts_highlight = 1
+
 Plug 'jiangmiao/auto-pairs'
 "Plug 'lambdalisue/vim-django-support' " <--- will eat your startup
 Plug 'alvan/vim-closetag'
   let g:closetag_filenames = '*.html,*.xhtml,*.xml,*.vue,*.phtml,*.js,*.jsx,*.coffee,*.erb'
+Plug 'tikhomirov/vim-glsl'
 
 " ========= file tree
 Plug  'scrooloose/nerdtree'
@@ -58,14 +76,31 @@ Plug  'scrooloose/nerdtree'
   autocmd VimEnter * if argc() == 0 && !exists("s:stdn_in") | NERDTree | endif
   " nerdtree toggle
   map <C-n> :NERDTreeToggle<CR>
+  " foler name color same as folder icon
+  highlight! link NERDTreeFlags NERDTreeDir
 
 " ========= navigation
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'zhaocai/GoldenView.Vim'
   let g:goldenview__enable_default_mapping = 0
 
+
 " ======= fuzzy find
-Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
+Plug 'junegunn/fzf.vim'
+  nnoremap <silent> <Leader>c :Commits<CR>
+  nnoremap <silent> <Leader>bc :BCommits<CR>
+  nnoremap <silent> <Leader>l :Lines<CR>
+  nnoremap <silent> <Leader>f :Files<CR>
+  nnoremap <silent> <Leader>g :GFiles?<CR>
+  nnoremap <silent> <Leader>a :Ag<CR>
+  command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+  command! -bang -nargs=* Ag
+    \ call fzf#vim#ag(<q-args>,
+    \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+    \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+    \                 <bang>0)
 
 " ======= extras
 " Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
@@ -75,11 +110,13 @@ Plug 'bling/vim-airline'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 
+" load as last
+Plug 'ryanoasis/vim-devicons'
 call plug#end()            " required
 filetype plugin indent on    " required
 
 " ============= extra settings
-set autochdir
+" set autochdir
 syntax on
 syntax sync minlines=100
 syntax sync maxlines=240
