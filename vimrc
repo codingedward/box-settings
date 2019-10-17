@@ -91,9 +91,9 @@ Plug 'junegunn/fzf.vim'
   nnoremap <silent> <Leader>c :Commits<CR>
   nnoremap <silent> <Leader>bc :BCommits<CR>
   nnoremap <silent> <Leader>l :Lines<CR>
-  nnoremap <silent> <Leader>f :Files<CR>
+  nnoremap <silent> <Leader>f :Ag<CR>
   nnoremap <silent> <Leader>g :GFiles?<CR>
-  nnoremap <silent> <Leader>a :Ag<CR>
+  nnoremap <silent> <Leader>F :Files<CR>
   command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
   command! -bang -nargs=* Ag
@@ -101,6 +101,10 @@ Plug 'junegunn/fzf.vim'
     \                 <bang>0 ? fzf#vim#with_preview('up:60%')
     \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
     \                 <bang>0)
+Plug 'pbogut/fzf-mru.vim'
+Plug 'dyng/ctrlsf.vim'
+  nnoremap <Leader>s :CtrlSF
+  
 
 " ======= extras
 " Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
