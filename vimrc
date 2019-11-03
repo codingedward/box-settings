@@ -1,58 +1,107 @@
+"{{{ Vi-nocompatible
+
 set nocompatible
-set encoding=utf-8
-let mapleader = " " 
+
+"}}}
+
+
+"{{{ Plugins
+
+"{{ Load plugin manager
+
+if !filereadable(expand('~/.vim/autoload/plug.vim'))
+    let s:first_init=1
+endif
+
+if exists("s:first_init")
+    echom 'Plugin manager: vim-plug not been installed. Attempting installation...'
+    exec 'silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs '.
+            \ 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    echom 'Installed successfully!'
+endif
 
 call plug#begin('~/.vim/plugged')
 
-" ========== autocomplete
+"}}
+
+
+"{{ Completion to use Tab only
+  
 Plug 'ervandew/supertab'
-Plug 'valloric/youcompleteme', { 'do': './install.py' }
+
+"}}
+
+"{{ Intellisense and autocomplete
+
+Plug 'valloric/youcompleteme', { 'do': './install.py --all' }
+
+  " YCM configuration file 
   let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+
   " YCM compatibility with UltiSnips
+  let g:SuperTabDefaultCompletionType = '<C-n>'
   let g:ycm_key_list_select_completion = [ '<C-n>', '<Down>' ] 
   let g:ycm_key_list_previous_completion = [ '<C-p>', '<Up>' ]
-  let g:SuperTabDefaultCompletionType = '<C-n>'
-  set completeopt-=preview " disable preview window
-  map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
-" ========= snippets
+  " Disable preview window
+  set completeopt-=preview
+
+"}}
+
+"{{ Collection of snippets
+
 Plug 'SirVer/ultisnips'
+
+"}}
+
+"{{ Integration with snippets
+
 Plug 'honza/vim-snippets'
+  " Use tabs on snippets
   let g:UltiSnipsExpandTrigger = "<tab>"
   let g:UltiSnipsJumpForwardTrigger = "<tab>"
   let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
-" ========== colorschemes 
+"}}
+
+"{{ Colorschemes
+
+" Load colorscheme
 Plug 'morhetz/gruvbox'
 
-" =========== git
+  " Use the default gruvbox contrast level
+  let g:gruvbox_contrast_dark='default'
+
+"}}
+
+"{{ Version control - Git
+  
+" Git integration on normal mode
 Plug 'tpope/vim-fugitive'
+
+" Gutter showing git changes
 Plug 'airblade/vim-gitgutter'
+
+" Nerd tree showing git changes
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
-" ========= syntax helpers
+"}}
+
+"{{ Language syntax helpers
+
+" Dart
 Plug 'dart-lang/dart-vim-plugin'
-Plug 'djoshea/vim-autoread'
-" Plug 'tpope/vim-rails'
-" Plug 'kchmck/vim-coffee-script'
+
+" JavaScript
 Plug 'pangloss/vim-javascript'
+
+" JSX
 Plug 'mxw/vim-jsx'
+
+" GraphQL
 Plug 'jparise/vim-graphql'
-Plug 'posva/vim-vue'
-"Plug 'vim-syntastic/syntastic' " <--- will eat your ram
-"  set statusline+=%#warningmsg#
-"  set statusline+=%{SyntasticStatuslineFlag()}
-"  set statusline+=%*
 
-"  let g:syntastic_always_populate_loc_list = 1
-"  let g:syntastic_auto_loc_list = 1
-"  let g:syntastic_check_on_open = 1
-"  let g:syntastic_check_on_wq = 0
-"  let g:syntastic_javascript_checkers = ['jslint']
-"  let g:syntastic_javascript_standard_generic = 1
-
-" Plug 'tpope/vim-commentary'
-Plug 'Chiel92/vim-autoformat'
+" C++
 Plug 'octol/vim-cpp-enhanced-highlight'
   let g:cpp_class_scope_highlight = 1
   let g:cpp_member_variable_highlight = 1
@@ -60,93 +109,178 @@ Plug 'octol/vim-cpp-enhanced-highlight'
   let g:cpp_experimental_template_highlight = 1
   let g:cpp_concepts_highlight = 1
 
-Plug 'jiangmiao/auto-pairs'
-"Plug 'lambdalisue/vim-django-support' " <--- will eat your startup
-Plug 'alvan/vim-closetag'
-  let g:closetag_filenames = '*.html,*.xhtml,*.xml,*.vue,*.phtml,*.js,*.jsx,*.coffee,*.erb'
+" GLSL
 Plug 'tikhomirov/vim-glsl'
 
-" ========= file tree
+" Autoformater
+Plug 'Chiel92/vim-autoformat'
+
+" Close braces and brackets
+Plug 'jiangmiao/auto-pairs'
+
+" Close XML tags
+Plug 'alvan/vim-closetag'
+  let g:closetag_filenames = '*.html,*.xhtml,*.xml,*.vue,*.phtml,*.js,*.jsx,*.coffee,*.erb'
+
+"}}
+
+
+"{{ Navigation
+
+" Project file tree
 Plug  'scrooloose/nerdtree'
-  let NERDTreeIgnore = [ '__pycache__',  '\.pyc$', '\.o$', '\.swp', '*\.swp', 'node_modules/' ]
+  
+  " Show hidden files
   let NERDTreeShowHidden=1
-  " autostart nerd-tree
+
+  " Hide these files
+  let NERDTreeIgnore = [ '__pycache__',  '\.pyc$', '\.o$', '\.swp', '*\.swp', 'node_modules/' ]
+  
+  " Autostart NERDTree on starting Vim
   autocmd vimenter * NERDTree
   autocmd StdinReadPre * let s:std_in=1
   autocmd VimEnter * if argc() == 0 && !exists("s:stdn_in") | NERDTree | endif
-  " nerdtree toggle
-  map <C-n> :NERDTreeToggle<CR>
-  " foler name color same as folder icon
+
+  " Toggle NERDTree
+  map <silent> <C-n> :NERDTreeToggle<CR>
+
+  " Folder name color same as folder icon
   highlight! link NERDTreeFlags NERDTreeDir
 
-" ========= navigation
+" TMUX-Vim integration
 Plug 'christoomey/vim-tmux-navigator'
+
+" Maximize active pane
 Plug 'zhaocai/GoldenView.Vim'
+  
+  " Disable default mapping
   let g:goldenview__enable_default_mapping = 0
 
-
-" ======= fuzzy find
+" Fuzzy finder
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
-Plug 'junegunn/fzf.vim'
-  nnoremap <silent> <Leader>c :Commits<CR>
-  nnoremap <silent> <Leader>bc :BCommits<CR>
-  nnoremap <silent> <Leader>l :Lines<CR>
-  nnoremap <silent> <Leader>f :Ag<CR>
-  nnoremap <silent> <Leader>g :GFiles?<CR>
-  nnoremap <silent> <Leader>F :Files<CR>
-  command! -bang -nargs=? -complete=dir Files
-    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
-  command! -bang -nargs=* Ag
-    \ call fzf#vim#ag(<q-args>,
-    \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-    \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-    \                 <bang>0)
-Plug 'pbogut/fzf-mru.vim'
-Plug 'dyng/ctrlsf.vim'
-  nnoremap <Leader>s :CtrlSF
-  
 
-" ======= extras
-" Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
-Plug 'bling/vim-airline'
-  " airline powerline fonts
-  let g:airline_powerline_fonts=1
+" Fuzy finder Vim integration
+Plug 'junegunn/fzf.vim'
+  
+  " Prepend all fzf commands to avoid pollution
+  let g:fzf_command_prefix = 'Fzf'
+
+  " Git commits
+  nnoremap <silent> <Leader>c :FzfCommits<CR>
+  
+  " Search within project
+  nnoremap <silent> <Leader>f :FzfAg<CR>
+  
+  " Search filenames
+  nnoremap <silent> <Leader>F :FzfFiles<CR>
+
+  " On press '?' when searching within project, show preview
+  command! -bang -nargs=? -complete=dir FzfFiles
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+  command! -bang -nargs=* FzfAg
+    \ call fzf#vim#ag(<q-args>, fzf#vim#with_preview('up:60%:right:50%'), <bang>0)
+
+" Global search allowing navigation from file to file
+Plug 'dyng/ctrlsf.vim'
+  nnoremap <Leader>s :CtrlSF<space>
+  "nnoremap <Leader>s <Plug>CtrlSFVwordExec
+
+
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 
-" load as last
-Plug 'ryanoasis/vim-devicons'
-call plug#end()            " required
-filetype plugin indent on    " required
+"}}
 
-" ============= extra settings
-" set autochdir
+
+"{{ Extras
+
+" Cool status bar
+Plug 'bling/vim-airline'
+
+  " ...with cool fonts
+  let g:airline_powerline_fonts=1
+
+" Cool file icons (important: load as last!)
+Plug 'ryanoasis/vim-devicons'
+
+"}}
+
+" Install all plugins if this is the firs load
+if exists('s:first_init')
+  PlugInstall
+end
+
+call plug#end()
+
+"}}}
+
+"{{{ Settings
+
+"{{ General
+
+set magic
+set lazyredraw
+set encoding=utf-8
+let mapleader = " " 
+set showmatch
+set autoread
+
+"}}
+
+"{{ Indentation
+
+set ruler
+set tabstop=2
+set shiftwidth=2
+set expandtab
+set smarttab
+set autoindent
+set smartindent
+set nowrap
+set bs=2
+
+"}}
+
+"{{ Search
+
+set incsearch
+set hlsearch
+set smartcase
+
+"}}
+
+"{{ Syntax
+
+filetype plugin indent on
 syntax on
 syntax sync minlines=100
 syntax sync maxlines=240
 set synmaxcol=800
 
-" tabs control
+" 4 spaces == 1 tab in php
 autocmd BufNewFile,BufRead *.php call SetTabsSpacing()
 function SetTabsSpacing()
     setlocal tabstop=4
     setlocal shiftwidth=4
 endfunction
 
-set tabstop=2
-set shiftwidth=2
-set expandtab
-set ruler
-set hidden
-let &colorcolumn="80"
-:set guioptions-=m " remove menu bar
-:set guioptions-=T " remove toolbar
-:set guioptions-=r " remove right-hand scroll bar
-:set guioptions-=L " remove left-hand scroll bar
-":set lines=999 columns=999
-set shortmess+=A " disable swap file warning
+"}}
 
-" hybrid line numbers
+"{{ View
+
+set background=dark
+colorscheme gruvbox
+set cmdheight=2
+set scrolloff=12
+let &colorcolumn=80
+if has('gui')
+  :set guioptions-=m " remove menu bar
+  :set guioptions-=T " remove toolbar
+  :set guioptions-=r " remove right-hand scroll bar
+  :set guioptions-=L " remove left-hand scroll bar
+end
+set shortmess+=A
 set number relativenumber
 augroup numbertoggle
   autocmd!
@@ -154,39 +288,70 @@ augroup numbertoggle
   autocmd BufLeave,FocusLost,InsertEnter * set norelativenumber
 augroup END
 
-" colorschemes 
-" Dark: monokai-chris, gruvbox
-" Light: ChocolatePapaya
-set background=dark
-colorscheme gruvbox
-  let g:gruvbox_contrast_dark='default'
-  let g:gruvbox_contrast_light='default'
+"}}
 
-" split below and right feels more natural
+set hidden
+set nobackup
+set nowritebackup
+
+"{{ Sane splits
+
 set splitbelow
 
-" no wrapping
-set nowrap
+"}}
 
-" allow backspace immediately after insert
-set bs=2
 
-" useful aliases
-cnoreabbrev W w
-cnoreabbrev Q q
+"{{ Persistent Undo
 
-" save undo in a file
-set undofile
-set undodir=~/.vim/undo
-set undolevels=1000
-set undoreload=10000
+if has("persistent_undo")
+  set undofile
+  set undodir=~/.vim/undo
+  set undolevels=1000
+  set undoreload=10000
+endif
 
-" incremental and highlight search
-set incsearch
-set hlsearch
+"}}
+
+
+"{{ Clipboard
+
+set clipboard=unnamed,unnamedplus
+
+"}}
 
 " clear highlighting on return in normal mode
 nnoremap <silent> <CR> :noh<CR><CR>
 
-" use global clipboard
-set clipboard=unnamed,unnamedplus
+
+"{{ No annoying bells
+
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+if has("gui_macvim")
+  autocmd GUIEnter * set vb t_vb=
+endif
+
+"}}
+
+"{{ Files
+
+set nobackup
+set nowb
+set noswapfile
+
+"}}
+
+"}}}
+
+
+"{{ Aliases
+
+cnoreabbrev W w
+cnoreabbrev Q q
+cnoreabbrev X x
+
+"}}
+
