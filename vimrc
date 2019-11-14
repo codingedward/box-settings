@@ -4,6 +4,11 @@ set nocompatible
 
 "}}}
 
+"{{{ Leader key
+
+let mapleader = " " 
+
+"}}}
 
 "{{{ Plugins
 
@@ -84,7 +89,6 @@ Plug 'airblade/vim-gitgutter'
 
 " Nerd tree showing git changes
 Plug 'Xuyuanp/nerdtree-git-plugin'
-
 "}}
 
 "{{ Language syntax helpers
@@ -144,6 +148,8 @@ Plug  'scrooloose/nerdtree'
   " Toggle NERDTree
   map <silent> <C-n> :NERDTreeToggle<CR>
 
+  map <silent> <Leader>r :NERDTreeFind<cr>
+
   " Folder name color same as folder icon
   highlight! link NERDTreeFlags NERDTreeDir
 
@@ -174,12 +180,14 @@ Plug 'junegunn/fzf.vim'
   " Search filenames
   nnoremap <silent> <Leader>F :FzfFiles<CR>
 
-  " On press '?' when searching within project, show preview
+  " Show file preview in fzf
   command! -bang -nargs=? -complete=dir FzfFiles
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
-
   command! -bang -nargs=* FzfAg
-    \ call fzf#vim#ag(<q-args>, fzf#vim#with_preview('up:60%:right:50%'), <bang>0)
+    \ call fzf#vim#ag(<q-args>,
+    \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+    \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+    \                 <bang>0)
 
 " Global search allowing navigation from file to file
 Plug 'dyng/ctrlsf.vim'
@@ -222,7 +230,6 @@ call plug#end()
 set magic
 set lazyredraw
 set encoding=utf-8
-let mapleader = " " 
 set showmatch
 set autoread
 

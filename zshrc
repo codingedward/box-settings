@@ -67,6 +67,8 @@ plugins=(
   fzf
 )
 
+bindkey -v
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -112,9 +114,10 @@ export NVM_DIR="$HOME/.nvm"
 # Aliases
 alias t="tmux"
 alias v="vim"
-alias f='fzf --reverse --preview="echo user={3} when={-4..-2}; bat --color=always --style=header,grid --line-range {-1}" --header-lines=1'
+alias f='fzf --reverse --ansi --preview-window "right:60%" --preview="echo user={3} when={-4..-2}; bat --color=always --style=header,grid --line-range :300 {}"'
 alias vf='v $(f)'
 alias art="/usr/local/bin/php artisan"
+alias weather="curl https://v2.wttr.in/Nairobi"
 
 alias differential="ssh smoothio@139.59.145.190"
 alias textit="ssh smoothio@165.227.139.225"
