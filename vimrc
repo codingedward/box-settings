@@ -99,8 +99,23 @@ Plug 'dart-lang/dart-vim-plugin'
 " JavaScript
 Plug 'pangloss/vim-javascript'
 
-" JSX
-Plug 'mxw/vim-jsx'
+"Plug 'chemzqm/vim-jsx-improve'
+Plug 'maxmellon/vim-jsx-pretty'
+  highlight def link jsxTag Identifier
+  highlight def link jsxTagName Identifier
+  highlight def link jsxComponentName Identifier
+
+  highlight def link jsxAttrib Include
+  highlight def link jsxAttribKeyword jsxAttrib
+  highlight def link jsxString String
+  highlight def link jsxComment Comment
+
+  highlight def link jsxDot Operator
+  highlight def link jsxNamespace Operator
+  highlight def link jsxEqual Operator
+  highlight def link jsxSpreadOperator Operator
+  highlight def link jsxBraces Operator
+
 
 " GraphQL
 Plug 'jparise/vim-graphql'
@@ -115,9 +130,6 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 
 " GLSL
 Plug 'tikhomirov/vim-glsl'
-
-" Autoformater
-Plug 'Chiel92/vim-autoformat'
 
 " Close braces and brackets
 Plug 'jiangmiao/auto-pairs'
@@ -276,6 +288,7 @@ endfunction
 
 "{{ View
 
+set conceallevel=3
 set background=dark
 colorscheme gruvbox
 set cmdheight=2
@@ -310,7 +323,15 @@ set splitbelow
 
 "{{ Persistent Undo
 
-if has("persistent_undo")
+"" Keep undo history across sessions by storing it in a file
+
+if has('persistent_undo')
+  let vim_dir = '$HOME/.vim'
+  "let &runtimepath.=','.vim_dir
+  let undo_dir = expand(vim_dir.'/undo')
+  call system('mkdir ' . vim_dir)
+  call system('mkdir ' . undo_dir)
+  let &undodir = undo_dir
   set undofile
   set undodir=~/.vim/undo
   set undolevels=1000
@@ -353,7 +374,6 @@ set noswapfile
 
 "}}}
 
-
 "{{ Aliases
 
 cnoreabbrev W w
@@ -362,3 +382,17 @@ cnoreabbrev X x
 
 "}}
 
+
+
+"{{{ Autoreload vim on changes made
+
+augroup vimrc
+    au!
+    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+augroup END
+
+if exists('g:loaded_webdevicons')
+    call webdevicons#refresh()
+endif
+
+"}}}
