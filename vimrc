@@ -129,10 +129,12 @@ Plug 'alvan/vim-closetag'
 Plug  'scrooloose/nerdtree'
   
   " Show hidden files
-  let NERDTreeShowHidden=1
+  let g:NERDTreeShowHidden=1
+
+  let g:NERDTreeMouseMode=3
 
   " Hide these files
-  let NERDTreeIgnore = [ '__pycache__',  '\.pyc$', '\.o$', '\.swp', '*\.swp', 'node_modules/' ]
+  let g:NERDTreeIgnore = [ '__pycache__',  '\.pyc$', '\.o$', '\.swp', '*\.swp', 'node_modules/' ]
   
   " Autostart NERDTree on starting Vim
   autocmd vimenter * NERDTree
