@@ -38,6 +38,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
         \ <SID>check_back_space() ? "\<TAB>" :
         \ coc#refresh()
   inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+  inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
   function! s:check_back_space() abort
     let col = col('.') - 1
@@ -97,14 +98,6 @@ Plug 'maxmellon/vim-jsx-pretty'
   highlight def link jsxSpreadOperator Operator
   highlight def link jsxBraces Operator
 
-
-Plug 'dense-analysis/ale'
-
-let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'javascript': ['prettier', 'eslint'],
-\}
-
 " GraphQL
 Plug 'jparise/vim-graphql'
 
@@ -149,7 +142,7 @@ Plug  'scrooloose/nerdtree'
   " Toggle NERDTree
   map <silent> <C-n> :NERDTreeToggle<CR>
 
-  map <silent> <Leader>r :NERDTreeFind<cr>
+  map <silent> <leader>r :NERDTreeFind<cr>
 
   " Folder name color same as folder icon
   highlight! link NERDTreeFlags NERDTreeDir
@@ -173,13 +166,13 @@ Plug 'junegunn/fzf.vim'
   let g:fzf_command_prefix = 'Fzf'
 
   " Git commits
-  nnoremap <silent> <Leader>c :FzfCommits<CR>
+  nnoremap <silent> <leader>c :FzfCommits<CR>
   
   " Search within project
-  nnoremap <silent> <Leader>f :FzfAg<CR>
+  nnoremap <silent> <leader>f :FzfAg<CR>
   
   " Search filenames
-  nnoremap <silent> <Leader>F :FzfFiles<CR>
+  nnoremap <silent> <leader>F :FzfFiles<CR>
 
   " Show file preview in fzf
   command! -bang -nargs=? -complete=dir FzfFiles
@@ -192,8 +185,27 @@ Plug 'junegunn/fzf.vim'
 
 " Global search allowing navigation from file to file
 Plug 'dyng/ctrlsf.vim'
-  nnoremap <Leader>s :CtrlSF<space>
-  "nnoremap <Leader>s <Plug>CtrlSFVwordExec
+  let g:ctrlsf_auto_focus = { 'at': 'start' }
+  let g:ctrlsf_mapping = { 'next': 'n',  'prev': 'N'  }
+  let g:ctrlsf_position = 'bottom'
+  nnoremap <leader>s viw :<C-u>call <SID>GrepFromSelected(visualmode())<CR>
+  "nnoremap <leader>s :<C-u>set operatorfunc=<SID>GrepFromSelected<CR>g@
+
+  function! s:GrepFromSelected(type)
+    let saved_unnamed_register = @@
+    if a:type ==# 'v'
+      normal! `<v`>y
+    elseif a:type ==# 'char'
+      normal! `[v`]y
+    else
+      return
+    endif
+    let word = substitute(@@, '\n$', '', 'g')
+    let word = escape(word, '| ')
+    let @@ = saved_unnamed_register
+    execute 'CtrlSF '.word
+  endfunction
+" }}
 
 
 Plug 'easymotion/vim-easymotion'
@@ -234,6 +246,7 @@ set encoding=utf-8
 set showmatch
 set autoread
 set updatetime=300
+set mouse=a
 
 "}}
 
