@@ -29,43 +29,24 @@ call plug#begin('~/.vim/plugged')
 
 "}}
 
-
-"{{ Completion to use Tab only
-  
-Plug 'ervandew/supertab'
-
-"}}
-
 "{{ Intellisense and autocomplete
 
-Plug 'valloric/youcompleteme', { 'do': './install.py --all' }
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-tslint', 'coc-prettier']
+  inoremap <silent><expr> <TAB>
+        \ pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ coc#refresh()
+  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-  " YCM configuration file 
-  let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
-
-  " YCM compatibility with UltiSnips
-  let g:SuperTabDefaultCompletionType = '<C-n>'
-  let g:ycm_key_list_select_completion = [ '<C-n>', '<Down>' ] 
-  let g:ycm_key_list_previous_completion = [ '<C-p>', '<Up>' ]
-
-  " Disable preview window
-  set completeopt-=preview
-
-"}}
-
-"{{ Collection of snippets
-
-Plug 'SirVer/ultisnips'
-
-"}}
-
-"{{ Integration with snippets
-
-Plug 'honza/vim-snippets'
-  " Use tabs on snippets
-  let g:UltiSnipsExpandTrigger = "<tab>"
-  let g:UltiSnipsJumpForwardTrigger = "<tab>"
-  let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+  function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+  endfunction
+  nmap <silent> gd <Plug>(coc-definition)
+  nmap <silent> gy <Plug>(coc-type-definition)
+  nmap <silent> gi <Plug>(coc-implementation)
+  nmap <silent> gr <Plug>(coc-references)
 
 "}}
 
@@ -117,8 +98,16 @@ Plug 'maxmellon/vim-jsx-pretty'
   highlight def link jsxBraces Operator
 
 
+Plug 'dense-analysis/ale'
+
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'javascript': ['prettier', 'eslint'],
+\}
+
 " GraphQL
 Plug 'jparise/vim-graphql'
+
 
 " C++
 Plug 'octol/vim-cpp-enhanced-highlight'
@@ -244,6 +233,7 @@ set lazyredraw
 set encoding=utf-8
 set showmatch
 set autoread
+set updatetime=300
 
 "}}
 
@@ -313,6 +303,7 @@ augroup END
 set hidden
 set nobackup
 set nowritebackup
+set completeopt-=preview
 
 "{{ Sane splits
 
