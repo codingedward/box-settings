@@ -75,13 +75,9 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 
 "{{ Language syntax helpers
 
-" Dart
-Plug 'dart-lang/dart-vim-plugin'
-
 " JavaScript
 Plug 'pangloss/vim-javascript'
 
-"Plug 'chemzqm/vim-jsx-improve'
 Plug 'maxmellon/vim-jsx-pretty'
   highlight def link jsxTag Identifier
   highlight def link jsxTagName Identifier
@@ -126,12 +122,10 @@ Plug 'alvan/vim-closetag'
 "{{ Navigation
 
 " Project file tree
-Plug  'scrooloose/nerdtree'
+Plug  'preservim/nerdtree'
   
   " Show hidden files
   let g:NERDTreeShowHidden=1
-
-  let g:NERDTreeMouseMode=3
 
   " Hide these files
   let g:NERDTreeIgnore = [ '__pycache__',  '\.pyc$', '\.o$', '\.swp', '*\.swp', 'node_modules/' ]
@@ -190,6 +184,7 @@ Plug 'dyng/ctrlsf.vim'
   let g:ctrlsf_auto_focus = { 'at': 'start' }
   let g:ctrlsf_mapping = { 'next': 'n',  'prev': 'N'  }
   let g:ctrlsf_position = 'bottom'
+  let g:ctrlsf_auto_preview = 1
   nnoremap <leader>s viw :<C-u>call <SID>GrepFromSelected(visualmode())<CR>
   "nnoremap <leader>s :<C-u>set operatorfunc=<SID>GrepFromSelected<CR>g@
 
@@ -223,9 +218,6 @@ Plug 'bling/vim-airline'
 
   " ...with cool fonts
   let g:airline_powerline_fonts=1
-
-" Cool file icons (important: load as last!)
-Plug 'ryanoasis/vim-devicons'
 
 "}}
 
@@ -392,13 +384,10 @@ cnoreabbrev X x
 
 "{{{ Autoreload vim on changes made
 
+
 augroup vimrc
     au!
     au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 augroup END
-
-if exists('g:loaded_webdevicons')
-    call webdevicons#refresh()
-endif
 
 "}}}
