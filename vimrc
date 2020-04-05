@@ -32,7 +32,7 @@ call plug#begin('~/.vim/plugged')
 "{{ Intellisense and autocomplete
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-tslint', 'coc-prettier']
+  let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-eslint', 'coc-prettier']
   inoremap <silent><expr> <TAB>
         \ pumvisible() ? "\<C-n>" :
         \ <SID>check_back_space() ? "\<TAB>" :
@@ -51,7 +51,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 "}}
 
-"{{ Colorschemes
+"{{ Colorschemes and views
 
 " Load colorscheme
 Plug 'morhetz/gruvbox'
@@ -59,6 +59,32 @@ Plug 'morhetz/gruvbox'
   " Use the default gruvbox contrast level
   let g:gruvbox_contrast_dark='default'
 
+Plug 'junegunn/goyo.vim'
+  let g:goyo_linenr = 1
+  nnoremap <silent> <leader>g :Goyo<CR>
+
+  function! s:goyo_enter()
+    if executable('tmux') && strlen($TMUX)
+      silent !tmux set status off
+      silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+    endif
+    set noshowmode
+    set noshowcmd
+    set scrolloff=999
+  endfunction
+
+  function! s:goyo_leave()
+    if executable('tmux') && strlen($TMUX)
+      silent !tmux set status on
+      silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+    endif
+    set showmode
+    set showcmd
+    set scrolloff=12
+  endfunction
+
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
 "}}
 
 "{{ Version control - Git
@@ -66,18 +92,26 @@ Plug 'morhetz/gruvbox'
 " Git integration on normal mode
 Plug 'tpope/vim-fugitive'
 
+" Open GitHub repo using :Gbrowse
+Plug 'tpope/vim-rhubarb'
+
 " Gutter showing git changes
 Plug 'airblade/vim-gitgutter'
 
 " Nerd tree showing git changes
 Plug 'Xuyuanp/nerdtree-git-plugin'
+  let g:NERDTreeUpdateOnCursorHold = 0
 "}}
 
 "{{ Language syntax helpers
 
+" Comments
+Plug 'tpope/vim-commentary'
+
 " JavaScript
 Plug 'pangloss/vim-javascript'
 
+" JSX with some overrides
 Plug 'maxmellon/vim-jsx-pretty'
   highlight def link jsxTag Identifier
   highlight def link jsxTagName Identifier
@@ -96,7 +130,6 @@ Plug 'maxmellon/vim-jsx-pretty'
 
 " GraphQL
 Plug 'jparise/vim-graphql'
-
 
 " C++
 Plug 'octol/vim-cpp-enhanced-highlight'
@@ -123,9 +156,11 @@ Plug 'alvan/vim-closetag'
 
 " Project file tree
 Plug  'preservim/nerdtree'
+
+  let g:NERDTreeMinimalUI = 1
   
   " Show hidden files
-  let g:NERDTreeShowHidden=1
+  let g:NERDTreeShowHidden = 1
 
   " Hide these files
   let g:NERDTreeIgnore = [ '__pycache__',  '\.pyc$', '\.o$', '\.swp', '*\.swp', 'node_modules/' ]
@@ -157,7 +192,6 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 
 " Fuzy finder Vim integration
 Plug 'junegunn/fzf.vim'
-  
   " Prepend all fzf commands to avoid pollution
   let g:fzf_command_prefix = 'Fzf'
 
@@ -204,7 +238,6 @@ Plug 'dyng/ctrlsf.vim'
   endfunction
 " }}
 
-
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 
@@ -212,12 +245,15 @@ Plug 'tpope/vim-surround'
 
 
 "{{ Extras
-
+ Plug 'itchyny/lightline.vim'
+  let g:lightline = {
+        \ 'colorscheme': 'seoul256',
+        \ }
 " Cool status bar
-Plug 'bling/vim-airline'
+"Plug 'bling/vim-airline'
 
   " ...with cool fonts
-  let g:airline_powerline_fonts=1
+  "let g:airline_powerline_fonts=1
 
 "}}
 
@@ -286,8 +322,9 @@ endfunction
 "{{ View
 
 set conceallevel=3
-set background=dark
 colorscheme gruvbox
+set background=dark
+let g:gruvbox_contrast_light="hard"
 set cmdheight=2
 set scrolloff=12
 let &colorcolumn=80
