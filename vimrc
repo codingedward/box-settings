@@ -220,7 +220,6 @@ Plug 'dyng/ctrlsf.vim'
   let g:ctrlsf_position = 'bottom'
   let g:ctrlsf_auto_preview = 1
   nnoremap <leader>s viw :<C-u>call <SID>GrepFromSelected(visualmode())<CR>
-  "nnoremap <leader>s :<C-u>set operatorfunc=<SID>GrepFromSelected<CR>g@
 
   function! s:GrepFromSelected(type)
     let saved_unnamed_register = @@
@@ -245,16 +244,10 @@ Plug 'tpope/vim-surround'
 
 
 "{{ Extras
- Plug 'itchyny/lightline.vim'
+Plug 'itchyny/lightline.vim'
   let g:lightline = {
         \ 'colorscheme': 'seoul256',
         \ }
-" Cool status bar
-"Plug 'bling/vim-airline'
-
-  " ...with cool fonts
-  "let g:airline_powerline_fonts=1
-
 "}}
 
 " Install all plugins if this is the firs load
