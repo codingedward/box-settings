@@ -241,6 +241,8 @@ Plug 'dyng/ctrlsf.vim'
 " }}
 
 Plug 'easymotion/vim-easymotion'
+  map  <leader>w <Plug>(easymotion-bd-w)
+
 Plug 'tpope/vim-surround'
 Plug 'AndrewRadev/tagalong.vim'
   let g:tagalong_additional_filetypes = ['javascript']
