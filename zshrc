@@ -28,9 +28,6 @@ alias vf='v $(f)'
 alias art="/usr/local/bin/php artisan"
 alias weather="curl https://v2.wttr.in/Nairobi"
 
-alias differential="ssh smoothio@139.59.145.190"
-alias textit="ssh smoothio@165.227.139.225"
-
 # download media
 alias p3="youtube-dl --extract-audio --audio-format mp3 $1"
 alias p4="youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' $1"
@@ -55,3 +52,21 @@ export PATH="/Users/edwardnjoroge/Library/Python/2.7/bin:$PATH"
 
 it2prof() { echo -e "\033]50;SetProfile=$1\a" }
 export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# conda config --set auto_activate_base False
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/edwardnjoroge/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/edwardnjoroge/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/edwardnjoroge/opt/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/edwardnjoroge/opt/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+

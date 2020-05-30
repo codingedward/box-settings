@@ -32,7 +32,7 @@ call plug#begin('~/.vim/plugged')
 "{{ Intellisense and autocomplete
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-eslint', 'coc-prettier']
+  let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-eslint', 'coc-prettier', 'coc-rls']
   inoremap <silent><expr> <TAB>
         \ pumvisible() ? "\<C-n>" :
         \ <SID>check_back_space() ? "\<TAB>" :
@@ -48,6 +48,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
   nmap <silent> gy <Plug>(coc-type-definition)
   nmap <silent> gi <Plug>(coc-implementation)
   nmap <silent> gr <Plug>(coc-references)
+  nmap <silent> gs <Plug>(coc-rename)
 
 "}}
 
@@ -91,6 +92,8 @@ autocmd! User GoyoLeave nested call <SID>goyo_leave()
   
 " Git integration on normal mode
 Plug 'tpope/vim-fugitive'
+  nmap <silent> gf :diffget //3<CR>
+  nmap <silent> gj :diffget //2<CR>
 
 " Open GitHub repo using :Gbrowse
 Plug 'tpope/vim-rhubarb'
@@ -101,6 +104,7 @@ Plug 'airblade/vim-gitgutter'
 " Nerd tree showing git changes
 Plug 'Xuyuanp/nerdtree-git-plugin'
   let g:NERDTreeUpdateOnCursorHold = 0
+  let g:NERDTreeWinSize = 40
 "}}
 
 "{{ Language syntax helpers
@@ -148,7 +152,6 @@ Plug 'jiangmiao/auto-pairs'
 " Close XML tags
 Plug 'alvan/vim-closetag'
   let g:closetag_filenames = '*.html,*.xhtml,*.xml,*.vue,*.phtml,*.js,*.jsx,*.coffee,*.erb'
-
 "}}
 
 
@@ -239,7 +242,9 @@ Plug 'dyng/ctrlsf.vim'
 
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
-
+Plug 'AndrewRadev/tagalong.vim'
+  let g:tagalong_additional_filetypes = ['javascript']
+  let g:tagalong_mappings = ['s', 'c', 'C', 'v', 'i', 'a']
 "}}
 
 
@@ -378,6 +383,10 @@ set clipboard=unnamed,unnamedplus
 " clear highlighting on return in normal mode
 nnoremap <silent> <CR> :noh<CR><CR>
 
+
+" nice move
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
 
 "{{ No annoying bells
 
