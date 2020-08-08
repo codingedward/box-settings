@@ -33,7 +33,6 @@ alias p3="youtube-dl --extract-audio --audio-format mp3 $1"
 alias p4="youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' $1"
 
 # mysql
-#
 export PATH="/usr/local/opt/mysql-client@5.7/bin:$PATH"
 
 # compilers to find zlib
@@ -48,11 +47,17 @@ export PKG_CONFIG_PATH="${PKG_CONFIG_PATH} /usr/local/opt/zlib/lib/pkgconfig"
 export PATH="/Users/edwardnjoroge/Library/Python/2.7/bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_COMMAND='ag --ignore "node_modules" -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+
+
 [ -f "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env" ] && source "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env"
 
 it2prof() { echo -e "\033]50;SetProfile=$1\a" }
 export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
+export EDITOR="/usr/local/bin/vim"
 
 # conda config --set auto_activate_base False
 # >>> conda initialize >>>

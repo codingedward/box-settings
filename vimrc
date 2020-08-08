@@ -15,14 +15,14 @@ let mapleader = " "
 "{{ Load plugin manager
 
 if !filereadable(expand('~/.vim/autoload/plug.vim'))
-    let s:first_init=1
+  let s:first_init=1
 endif
 
 if exists("s:first_init")
-    echom 'Plugin manager: vim-plug not been installed. Attempting installation...'
-    exec 'silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs '.
-            \ 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-    echom 'Installed successfully!'
+  echom 'Plugin manager: vim-plug not been installed. Attempting installation...'
+  exec 'silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs '.
+        \ 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  echom 'Installed successfully!'
 endif
 
 call plug#begin('~/.vim/plugged')
@@ -32,23 +32,23 @@ call plug#begin('~/.vim/plugged')
 "{{ Intellisense and autocomplete
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-eslint', 'coc-prettier', 'coc-rls']
-  inoremap <silent><expr> <TAB>
-        \ pumvisible() ? "\<C-n>" :
-        \ <SID>check_back_space() ? "\<TAB>" :
-        \ coc#refresh()
-  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-  inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-eslint', 'coc-prettier', 'coc-rls']
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-  function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~# '\s'
-  endfunction
-  nmap <silent> gd <Plug>(coc-definition)
-  nmap <silent> gy <Plug>(coc-type-definition)
-  nmap <silent> gi <Plug>(coc-implementation)
-  nmap <silent> gr <Plug>(coc-references)
-  nmap <silent> gs <Plug>(coc-rename)
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gs <Plug>(coc-rename)
 
 "}}
 
@@ -57,43 +57,47 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Load colorscheme
 Plug 'morhetz/gruvbox'
 
-  " Use the default gruvbox contrast level
-  let g:gruvbox_contrast_dark='default'
+" Use the default gruvbox contrast level
+let g:gruvbox_contrast_dark='default'
 
 Plug 'junegunn/goyo.vim'
-  let g:goyo_linenr = 1
-  nnoremap <silent> <leader>g :Goyo<CR>
+let g:goyo_linenr = 1
+nnoremap <silent> <leader>g :Goyo<CR>
 
-  function! s:goyo_enter()
-    if executable('tmux') && strlen($TMUX)
-      silent !tmux set status off
-      silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
-    endif
-    set noshowmode
-    set noshowcmd
-    set scrolloff=999
-  endfunction
+function! s:goyo_enter()
+  if executable('tmux') && strlen($TMUX)
+    silent !tmux set status off
+    silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+  endif
+  set noshowmode
+  set noshowcmd
+  set scrolloff=999
+endfunction
 
-  function! s:goyo_leave()
-    if executable('tmux') && strlen($TMUX)
-      silent !tmux set status on
-      silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
-    endif
-    set showmode
-    set showcmd
-    set scrolloff=12
-  endfunction
+function! s:goyo_leave()
+  if executable('tmux') && strlen($TMUX)
+    silent !tmux set status on
+    silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+  endif
+  set showmode
+  set showcmd
+  set scrolloff=12
+endfunction
 
 autocmd! User GoyoEnter nested call <SID>goyo_enter()
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
+
+" tsconfig set correct format
+Plug 'neoclide/jsonc.vim'
+autocmd BufRead,BufNewFile tsconfig.json set filetype=jsonc
 "}}
 
 "{{ Version control - Git
-  
+
 " Git integration on normal mode
 Plug 'tpope/vim-fugitive'
-  nmap <silent> gf :diffget //3<CR>
-  nmap <silent> gj :diffget //2<CR>
+nmap <silent> gf :diffget //3<CR>
+nmap <silent> gj :diffget //2<CR>
 
 " Open GitHub repo using :Gbrowse
 Plug 'tpope/vim-rhubarb'
@@ -103,8 +107,8 @@ Plug 'airblade/vim-gitgutter'
 
 " Nerd tree showing git changes
 Plug 'Xuyuanp/nerdtree-git-plugin'
-  let g:NERDTreeUpdateOnCursorHold = 0
-  let g:NERDTreeWinSize = 40
+let g:NERDTreeUpdateOnCursorHold = 0
+let g:NERDTreeWinSize = 40
 "}}
 
 "{{ Language syntax helpers
@@ -117,41 +121,42 @@ Plug 'pangloss/vim-javascript'
 
 " JSX with some overrides
 Plug 'maxmellon/vim-jsx-pretty'
-  highlight def link jsxTag Identifier
-  highlight def link jsxTagName Identifier
-  highlight def link jsxComponentName Identifier
+highlight def link jsxTag Identifier
+highlight def link jsxTagName Identifier
+highlight def link jsxComponentName Identifier
 
-  highlight def link jsxAttrib Include
-  highlight def link jsxAttribKeyword jsxAttrib
-  highlight def link jsxString String
-  highlight def link jsxComment Comment
+highlight def link jsxAttrib Include
+highlight def link jsxAttribKeyword jsxAttrib
+highlight def link jsxString String
+highlight def link jsxComment Comment
 
-  highlight def link jsxDot Operator
-  highlight def link jsxNamespace Operator
-  highlight def link jsxEqual Operator
-  highlight def link jsxSpreadOperator Operator
-  highlight def link jsxBraces Operator
+highlight def link jsxDot Operator
+highlight def link jsxNamespace Operator
+highlight def link jsxEqual Operator
+highlight def link jsxSpreadOperator Operator
+highlight def link jsxBraces Operator
 
 " GraphQL
 Plug 'jparise/vim-graphql'
 
 " C++
 Plug 'octol/vim-cpp-enhanced-highlight'
-  let g:cpp_class_scope_highlight = 1
-  let g:cpp_member_variable_highlight = 1
-  let g:cpp_class_decl_highlight = 1
-  let g:cpp_experimental_template_highlight = 1
-  let g:cpp_concepts_highlight = 1
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_experimental_template_highlight = 1
+let g:cpp_concepts_highlight = 1
 
 " GLSL
 Plug 'tikhomirov/vim-glsl'
 
 " Close braces and brackets
 Plug 'jiangmiao/auto-pairs'
+au FileType rust let b:AutoPairs = AutoPairsDefine({ "'" : '' })
 
 " Close XML tags
 Plug 'alvan/vim-closetag'
-  let g:closetag_filenames = '*.html,*.xhtml,*.xml,*.vue,*.phtml,*.js,*.jsx,*.coffee,*.erb'
+let g:closetag_filenames = '*.html,*.xhtml,*.xml,*.vue,*.phtml,*.js,*.jsx,*.coffee,*.erb'
 "}}
 
 
@@ -160,101 +165,103 @@ Plug 'alvan/vim-closetag'
 " Project file tree
 Plug  'preservim/nerdtree'
 
-  let g:NERDTreeMinimalUI = 1
-  
-  " Show hidden files
-  let g:NERDTreeShowHidden = 1
+let g:NERDTreeMinimalUI = 1
 
-  " Hide these files
-  let g:NERDTreeIgnore = [ '__pycache__',  '\.pyc$', '\.o$', '\.swp', '*\.swp', 'node_modules/' ]
-  
-  " Autostart NERDTree on starting Vim
-  autocmd vimenter * NERDTree
-  autocmd StdinReadPre * let s:std_in=1
-  autocmd VimEnter * if argc() == 0 && !exists("s:stdn_in") | NERDTree | endif
+" Show hidden files
+let g:NERDTreeShowHidden = 1
 
-  " Toggle NERDTree
-  map <silent> <C-n> :NERDTreeToggle<CR>
+" Hide these files
+let g:NERDTreeIgnore = [ '__pycache__',  '\.pyc$', '\.o$', '\.swp', '*\.swp', 'node_modules' ]
 
-  map <silent> <leader>r :NERDTreeFind<cr>
+" Autostart NERDTree on starting Vim
+autocmd vimenter * NERDTree
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:stdn_in") | NERDTree | endif
 
-  " Folder name color same as folder icon
-  highlight! link NERDTreeFlags NERDTreeDir
+" Toggle NERDTree
+map <silent> <C-n> :NERDTreeToggle<CR>
+
+map <silent> <leader>r :NERDTreeFind<cr>
+
+" Folder name color same as folder icon
+highlight! link NERDTreeFlags NERDTreeDir
 
 " TMUX-Vim integration
 Plug 'christoomey/vim-tmux-navigator'
 
 " Maximize active pane
 Plug 'zhaocai/GoldenView.Vim'
-  
-  " Disable default mapping
-  let g:goldenview__enable_default_mapping = 0
+
+" Disable default mapping
+let g:goldenview__enable_default_mapping = 0
 
 " Fuzzy finder
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 
 " Fuzy finder Vim integration
 Plug 'junegunn/fzf.vim'
-  " Prepend all fzf commands to avoid pollution
-  let g:fzf_command_prefix = 'Fzf'
+" Prepend all fzf commands to avoid pollution
+let g:fzf_command_prefix = 'Fzf'
+let g:fzf_history_dir = '~/.fzf/history'
 
-  " Git commits
-  nnoremap <silent> <leader>c :FzfCommits<CR>
-  
-  " Search within project
-  nnoremap <silent> <leader>f :FzfAg<CR>
-  
-  " Search filenames
-  nnoremap <silent> <leader>F :FzfFiles<CR>
+" Git commits
+nnoremap <silent> <leader>c :FzfCommits<CR>
 
-  " Show file preview in fzf
-  command! -bang -nargs=? -complete=dir FzfFiles
-    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
-  command! -bang -nargs=* FzfAg
-    \ call fzf#vim#ag(<q-args>,
-    \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-    \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-    \                 <bang>0)
+" Search within project
+nnoremap <silent> <leader>f :FzfAg<CR>
+
+" Search filenames
+nnoremap <silent> <leader>F :FzfFiles<CR>
+
+" Show file preview in fzf
+command! -bang -nargs=? -complete=dir FzfFiles
+      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+command! -bang -nargs=* FzfAg
+      \ call fzf#vim#ag(<q-args>,
+      \                 '--ignore "node_modules" --ignore "yarn.lock"',
+      \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+      \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+      \                 <bang>0)
 
 " Global search allowing navigation from file to file
 Plug 'dyng/ctrlsf.vim'
-  let g:ctrlsf_auto_focus = { 'at': 'start' }
-  let g:ctrlsf_mapping = { 'next': 'n',  'prev': 'N'  }
-  let g:ctrlsf_position = 'bottom'
-  let g:ctrlsf_auto_preview = 1
-  nnoremap <leader>s viw :<C-u>call <SID>GrepFromSelected(visualmode())<CR>
+let g:ctrlsf_auto_focus = { 'at': 'start' }
+let g:ctrlsf_mapping = { 'next': 'n',  'prev': 'N'  }
+let g:ctrlsf_position = 'bottom'
+let g:ctrlsf_auto_preview = 1
+nnoremap <leader>s viw :<C-u>call <SID>GrepFromSelected(visualmode())<CR>
 
-  function! s:GrepFromSelected(type)
-    let saved_unnamed_register = @@
-    if a:type ==# 'v'
-      normal! `<v`>y
-    elseif a:type ==# 'char'
-      normal! `[v`]y
-    else
-      return
-    endif
-    let word = substitute(@@, '\n$', '', 'g')
-    let word = escape(word, '| ')
-    let @@ = saved_unnamed_register
-    execute 'CtrlSF '.word
-  endfunction
+function! s:GrepFromSelected(type)
+  let saved_unnamed_register = @@
+  if a:type ==# 'v'
+    normal! `<v`>y
+  elseif a:type ==# 'char'
+    normal! `[v`]y
+  else
+    return
+  endif
+  let word = substitute(@@, '\n$', '', 'g')
+  let word = escape(word, '| ')
+  let @@ = saved_unnamed_register
+  execute 'CtrlSF '.word
+endfunction
 " }}
 
 Plug 'easymotion/vim-easymotion'
-  map  <leader>w <Plug>(easymotion-bd-w)
+map  <leader>w <Plug>(easymotion-bd-w)
 
 Plug 'tpope/vim-surround'
 Plug 'AndrewRadev/tagalong.vim'
-  let g:tagalong_additional_filetypes = ['javascript']
-  let g:tagalong_mappings = ['s', 'c', 'C', 'v', 'i', 'a']
+let g:tagalong_additional_filetypes = ['javascript']
+let g:tagalong_mappings = ['s', 'c', 'C', 'v', 'i', 'a']
 "}}
 
 
 "{{ Extras
 Plug 'itchyny/lightline.vim'
-  let g:lightline = {
-        \ 'colorscheme': 'seoul256',
-        \ }
+let g:lightline = {
+      \ 'colorscheme': 'seoul256',
+      \ }
 "}}
 
 " Install all plugins if this is the firs load
@@ -313,8 +320,8 @@ set synmaxcol=800
 " 4 spaces == 1 tab in php
 autocmd BufNewFile,BufRead *.php call SetTabsSpacing()
 function SetTabsSpacing()
-    setlocal tabstop=4
-    setlocal shiftwidth=4
+  setlocal tabstop=4
+  setlocal shiftwidth=4
 endfunction
 
 "}}
@@ -384,7 +391,8 @@ set clipboard=unnamed,unnamedplus
 
 " clear highlighting on return in normal mode
 nnoremap <silent> <CR> :noh<CR><CR>
-
+nnoremap <silent> <leader>ev :vs $MYVIMRC<CR>
+nnoremap <silent> <leader>sv :source $MYVIMRC<CR>
 
 " nice move
 vnoremap J :m '>+1<CR>gv=gv
@@ -410,7 +418,6 @@ set nowb
 set noswapfile
 
 "}}
-
 "}}}
 
 "{{ Aliases
@@ -418,17 +425,17 @@ set noswapfile
 cnoreabbrev W w
 cnoreabbrev Q q
 cnoreabbrev X x
+cnoreabbrev QA qa
 
 "}}
-
 
 
 "{{{ Autoreload vim on changes made
 
 
 augroup vimrc
-    au!
-    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+  au!
+  au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC
 augroup END
 
 "}}}
