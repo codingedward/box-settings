@@ -32,7 +32,7 @@ call plug#begin('~/.vim/plugged')
 "{{ Intellisense and autocomplete
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-eslint', 'coc-prettier', 'coc-rls']
+let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-eslint', 'coc-prettier', 'coc-rls', 'coc-flutter']
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
@@ -105,9 +105,17 @@ Plug 'tpope/vim-rhubarb'
 " Gutter showing git changes
 Plug 'airblade/vim-gitgutter'
 
+"Cheat sheet
+Plug 'https://gitlab.com/codingedward/cheat.sh-vim'
+let g:CheatSheetDoNotMap=1
+nnoremap <script> <silent> <leader>k
+            \ :call cheat#cheat("", getcurpos()[1], getcurpos()[1], 0, 0, '!')<CR>
+vnoremap <script> <silent> <leader>k
+            \ :call cheat#cheat("", -1, -1, 2, 0, '!')<CR>
+
 " Nerd tree showing git changes
 Plug 'Xuyuanp/nerdtree-git-plugin'
-let g:NERDTreeUpdateOnCursorHold = 0
+"let g:NERDTreeUpdateOnCursorHold = 0
 let g:NERDTreeWinSize = 40
 "}}
 
@@ -118,6 +126,9 @@ Plug 'tpope/vim-commentary'
 
 " JavaScript
 Plug 'pangloss/vim-javascript'
+
+" Dart
+Plug 'dart-lang/dart-vim-plugin'
 
 " JSX with some overrides
 Plug 'maxmellon/vim-jsx-pretty'
@@ -156,7 +167,7 @@ au FileType rust let b:AutoPairs = AutoPairsDefine({ "'" : '' })
 
 " Close XML tags
 Plug 'alvan/vim-closetag'
-let g:closetag_filenames = '*.html,*.xhtml,*.xml,*.vue,*.phtml,*.js,*.jsx,*.coffee,*.erb'
+let g:closetag_filenames = '*.html,*.xhtml,*.xml,*.vue,*.js,*.jsx,*.tsx,*.ts'
 "}}
 
 
@@ -171,7 +182,7 @@ let g:NERDTreeMinimalUI = 1
 let g:NERDTreeShowHidden = 1
 
 " Hide these files
-let g:NERDTreeIgnore = [ '__pycache__',  '\.pyc$', '\.o$', '\.swp', '*\.swp', 'node_modules' ]
+let g:NERDTreeIgnore = [ '__pycache__',  '\.pyc$', '\.o$', '\.swp', '*\.swp', 'node_modules', '.dart_tool', '.idea' ]
 
 " Autostart NERDTree on starting Vim
 autocmd vimenter * NERDTree
@@ -248,7 +259,8 @@ endfunction
 " }}
 
 Plug 'easymotion/vim-easymotion'
-map  <leader>w <Plug>(easymotion-bd-w)
+nmap e <Plug>(easymotion-bd-w)
+
 
 Plug 'tpope/vim-surround'
 Plug 'AndrewRadev/tagalong.vim'
