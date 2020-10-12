@@ -1,0 +1,36 @@
+{
+  "eslint.autoFixOnSave": true,
+  "eslint.autoFix": true,
+
+  // flutter
+  "flutter.enabled": true,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "dart"
+  ],
+  "flutter.lsp.initialization.onlyAnalyzeProjectsWithOpenFiles": false,
+
+  // other languageservers
+  "languageserver": {
+    "haskell": {
+      "command": "hie-wrapper",
+      "args": ["--lsp"],
+      "rootPatterns": [
+        "*.cabal",
+        "stack.yaml",
+        "cabal.project",
+        "package.yaml"
+      ],
+      "filetypes": [
+        "hs",
+        "lhs",
+        "haskell"
+      ],
+      "initializationOptions": {
+        "languageServerHaskell": {
+          "hlintOn": true
+        }
+      }
+    }
+  }
+}
+
