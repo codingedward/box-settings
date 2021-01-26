@@ -1,4 +1,5 @@
-export ZSH="/Users/box/.oh-my-zsh"
+# If you come from bash you might have to change your $PATH.
+export ZSH="/Users/edward/.oh-my-zsh"
 
 ZSH_THEME="cloud"
 
@@ -13,6 +14,12 @@ bindkey '^F' clear-screen
 
 export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
+export EDITOR=vim
+
+export PATH="/usr/local/bin:$PATH:/usr/local/opt/flutter/bin:/usr/local/opt/flutter/bin/cache/dart-sdk/bin" 
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
 # Aliases
 alias t="tmux"
@@ -28,21 +35,41 @@ alias p3="youtube-dl --extract-audio --audio-format mp3 $1"
 alias p4="youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' $1"
 
 # mysql
-export PATH="/usr/local/opt/mysql-client@5.7/bin:$PATH"
 export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
-export PATH="/usr/local/bin:$PATH:/usr/local/opt/flutter/bin:/usr/local/opt/flutter/bin/cache/dart-sdk/bin" 
 
+export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
+export LDFLAGS="${LDFLAGS} -L/usr/local/opt/openssl@1.1/lib"
+export CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/openssl@1.1/include"
+# compilers to find zlib
+export LDFLAGS="${LDFLAGS} -L/usr/local/opt/zlib/lib"
+export CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/zlib/include"
+# pkg-config to find zlib
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH} /usr/local/opt/zlib/lib/pkgconfig"
 
-export LDFLAGS="${LDFLAGS} -L/usr/local/opt/zlib/lib -L/usr/local/opt/openssl@1.1/lib"
-export CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/zlib/include -I/usr/local/opt/openssl@1.1/include"
+# elastic beanstalk
+export PATH="/Users/edward/Library/Python/2.7/bin:$PATH"
+export PATH="/Users/edward/.ebcli-virtual-env/executables:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_COMMAND='ag --ignore "node_modules" -g ""'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+[ -f "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env" ] && source "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env"
 
-export EDITOR="/usr/local/bin/vim"
+it2prof() { echo -e "\033]50;SetProfile=$1\a" }
+export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-[ -f "/Users/box/.ghcup/env" ] && source "/Users/box/.ghcup/env" # ghcup-env
+
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  check_if_needs_to_switch_profile() {
+    val=$(defaults read -g AppleInterfaceStyle 2>/dev/null)
+    if [[ $val == "Dark" ]]; then
+      echo -ne "\033]50;SetProfile=Dark\a"
+      export ITERM_PROFILE="Dark"
+    else
+      echo -ne "\033]50;SetProfile=Light\a"
+      export ITERM_PROFILE="Light"
+    fi
+  }
+
+  check_if_needs_to_switch_profile
+fi
+
