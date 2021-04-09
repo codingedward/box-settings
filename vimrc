@@ -35,8 +35,10 @@ call plug#begin('~/.vim/plugged')
 
 "{{ Intellisense and autocomplete
 
+Plug 'rescript-lang/vim-rescript'
+autocmd BufWritePost .res :RescriptFormat<CR>
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-eslint', 'coc-prettier', 'coc-rls', 'coc-flutter']
+let g:coc_global_extensions = ['coc-json', 'coc-pyright', 'coc-tsserver', 'coc-eslint', 'coc-prettier', 'coc-rls', 'coc-flutter']
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
@@ -210,6 +212,16 @@ command! -bang -nargs=* FzfAg
       \                 <bang>0 ? fzf#vim#with_preview('up:60%')
       \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
       \                 <bang>0)
+function! s:set_fzf_maps()
+  tnoremap <buffer> <C-t> <C-\><C-n>:close<CR>:sleep 100m<CR>:FzfFiles<CR>
+  tnoremap <buffer> <C-g> <C-\><C-n>:close<CR>:sleep 100m<CR>:FzfAg<CR>
+  tnoremap <buffer> <C-o> <C-\><C-n>:close<CR>:sleep 100m<CR>:FzfHistory<CR>
+endfunction
+
+augroup fzfMappingsAu
+  autocmd!
+  autocmd FileType fzf call <SID>set_fzf_maps()
+augroup END
 
 " Global search allowing navigation from file to file
 Plug 'dyng/ctrlsf.vim'

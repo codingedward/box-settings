@@ -1,15 +1,18 @@
 {
-  "eslint.autoFixOnSave": true,
-  "eslint.autoFix": true,
-
-  // flutter
   "flutter.enabled": true,
   "coc.preferences.formatOnSaveFiletypes": [
-    "dart"
+    "dart",
+    "python",
+    "rescript"
   ],
   "flutter.lsp.initialization.onlyAnalyzeProjectsWithOpenFiles": false,
 
-  // other languageservers
+  "python.analysis.autoImportCompletions": true,
+  "python.formatting.provider": "autopep8",
+
+  "eslint.autoFixOnSave": true,
+  "eslint.autoFix": true,
+
   "languageserver": {
     "haskell": {
       "command": "hie-wrapper",
@@ -34,23 +37,37 @@
     "ccls": {
       "command": "ccls",
       "filetypes": [
-          "c",
-          "cpp",
-          "objc",
-          "objcpp"
+        "c",
+        "cpp",
+        "objc",
+        "objcpp"
       ],
       "rootPatterns": [
-          ".ccls",
-          "compile_commands.json",
-          ".vim/",
-          ".git/",
-          ".hg/"
+        ".ccls",
+        "compile_commands.json",
+        ".vim/",
+        ".git/",
+        ".hg/"
       ],
       "initializationOptions": {
           "cache": {
-              "directory": "/tmp/ccls"
-          }
+            "directory": "/tmp/ccls"
+          },
+          "client": {
+            "snippetSupport": true
+         },
+         "completion": {
+           "placeholder": true
+         },
+         "highlight": { "lsRanges" : true }
       }
+    },
+    "rescript": {
+      "enable": true,
+      "module": "~/.vim/plugged/vim-rescript/rescript-vscode/extension/server/out/server.js",
+      "args": ["--node-ipc"],
+      "filetypes": ["rescript"],
+      "rootPatterns": ["bsconfig.json"]
     }
   }
 }
